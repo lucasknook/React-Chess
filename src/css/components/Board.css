@@ -1,0 +1,36 @@
+.boardContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    height: fit-content;
+    width: fit-content;
+}
+
+.darkSquare {
+    width: calc(100vh / 8);
+    height: calc(100vh / 8);
+    background-color: #b58863;
+}
+
+.lightSquare {
+    width: calc(100vh / 8);
+    height: calc(100vh / 8);
+    background-color: #f0d9b5;
+}
+
+.pieceImage {
+    width: calc(100vh / 8);
+    height: calc(100vh / 8);
+}
+
+/* Media Query for mobile devices */
+@media (max-width: calc(100vh)) {
+    .darkSquare, .lightSquare, .pieceImage {
+        width: calc(100vw / 8);
+        height: calc(100vw / 8);
+    }
+}
