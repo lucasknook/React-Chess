@@ -1,0 +1,6 @@
+.pieceImage {
+    width: calc(100vh / 8);
+    height: calc(100vh / 8);
+
+    position: absolute;
+}

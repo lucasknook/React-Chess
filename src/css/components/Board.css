@@ -22,9 +22,10 @@
     background-color: #f0d9b5;
 }
 
-.pieceImage {
+.selectedSquare {
     width: calc(100vh / 8);
     height: calc(100vh / 8);
+    background-color: yellow;
 }
 
 /* Media Query for mobile devices */
