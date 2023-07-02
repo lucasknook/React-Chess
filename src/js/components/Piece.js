@@ -17,6 +17,7 @@ import black_pawn from '../../assets/pieces/bp.png'
 
 /* Custom pieces */
 import white_knook from '../../assets/pieces/custom/wñ.png'
+import black_knook from '../../assets/pieces/custom/bñ.png'
 
 export default function Piece ({piece}) {
 
@@ -50,6 +51,8 @@ export default function Piece ({piece}) {
             /* Custom pieces */
             case "wñ":
                 return white_knook
+            case "bñ":
+                return black_knook
 
             default:
                 // Handle unknown piece or empty square

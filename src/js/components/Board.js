@@ -13,7 +13,7 @@ export default function Board () {
         ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
         ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
         [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
+        [null, 'bñ', null, null, null, null, null, null],
         [null, null, null, null, 'wñ', null, null, null],
         [null, null, null, null, null, null, null, null],
         ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
