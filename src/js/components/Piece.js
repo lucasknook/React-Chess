@@ -15,6 +15,9 @@ import black_queen from '../../assets/pieces/bq.png'
 import black_king from '../../assets/pieces/bk.png'
 import black_pawn from '../../assets/pieces/bp.png'
 
+/* Custom pieces */
+import white_knook from '../../assets/pieces/custom/wñ.png'
+
 export default function Piece ({piece}) {
 
     function getPieceImageSrc (pieceName) {
@@ -43,6 +46,11 @@ export default function Piece ({piece}) {
                 return black_king
             case "bp":
                 return black_pawn
+
+            /* Custom pieces */
+            case "wñ":
+                return white_knook
+
             default:
                 // Handle unknown piece or empty square
                 console.log("Unknown piece in Piece.js: " + pieceName)
