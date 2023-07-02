@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import * as constants from '../resources/constants.js'
 import Piece from './Piece.js'
@@ -55,11 +55,11 @@ export default function Board () {
 
             /* If the move is legal, move the piece */
             if (isLegalMove) {
-                console.log("Legal move")
                 const boardCopy = board
                 boardCopy[clicked_row][clicked_col] = selectedPieceName
                 boardCopy[selected_row][selected_col] = null
                 setBoard(boardCopy)
+                setHints([])
             }
 
             /* Unselect the piece */
@@ -75,6 +75,8 @@ export default function Board () {
     }
 
     function generateSquareJSX (row, col) {
+        const piece = board[row][col]
+
         /* Determine square color */
         const squareColor = (row % 2) === (col % 2) ? "lightSquare" : "darkSquare"
 
@@ -82,7 +84,8 @@ export default function Board () {
         const isSelected = selectedPiece[0] === row && selectedPiece[1] === col
         const squareClassName = isSelected ? "selectedSquare" : squareColor
 
-        /* Check if the current square is a hint */
+        /* Check if the current square is a hint, and what type
+           op hint */
         let isHint = false
         for (let i = 0; i < hints.length; i++) {
             if (hints[i][0] === row && hints[i][1] === col) {
@@ -91,8 +94,10 @@ export default function Board () {
             }
         }
 
-        /* Obtain the name of the piece */
-        const piece = board[row][col]
+        const hintClassName =
+            isHint && piece && selectedPiece && piece[0] != selectedPiece[0]
+                ? "capture-hint"
+                : "normal-hint"
 
         /* Give each element a unique key */
         const key = "piece" + row * constants.BOARD_SIZE + col
@@ -100,7 +105,7 @@ export default function Board () {
         return (
             <div key={key} className={squareClassName} onClick={() => movePiece(row, col)}>
                 {piece ? <Piece piece={piece} /> : null}
-                {isHint ? <Hint /> : null}
+                {isHint ? <Hint className={hintClassName}/> : null}
             </div>
         )
     }

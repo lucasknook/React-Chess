@@ -1,7 +1,7 @@
 import '../../css/components/Hint.css'
 
-export default function Hint () {
+export default function Hint ({className}) {
     return (
-        <div className="hint"></div>
+        <div className={className}></div>
     )
 }

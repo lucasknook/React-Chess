@@ -1,11 +1,39 @@
-.hint {
+:root {
+    --hint-size: 30%;
+    --hint-color: grey;
+
+    --capture-hint-size: 6%;
+    --capture-hint-border-size: 1 / 16;
+    --capture-hint-color: rgb(230, 102, 102);
+}
+
+.normal-hint {
     position: relative;
-    width: 30%;
-    height: 30%;
+    width: var(--hint-size);
+    height: var(--hint-size);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 100%;
     background-color: grey;
     opacity: 0.5;
+}
+
+.capture-hint {
+    position: relative;
+    width: calc(100% - var(--capture-hint-size) * 2);
+    height: calc(100% - var(--capture-hint-size) * 2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 100%;
+    border: calc(100vh / 8 * var(--capture-hint-border-size)) solid var(--capture-hint-color);
+    opacity: 0.5;
+}
+
+/* Media Query for mobile devices */
+@media (max-width: calc(100vh)) {
+    .capture-hint {
+        border: calc(100vw / 8 * var(--capture-hint-border-size)) solid var(--capture-hint-color);
+    }
 }

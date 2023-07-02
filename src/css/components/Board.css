@@ -30,7 +30,7 @@
 
 /* Media Query for mobile devices */
 @media (max-width: calc(100vh)) {
-    .darkSquare, .lightSquare, .pieceImage {
+    .darkSquare, .lightSquare, .selectedSquare, .pieceImage {
         width: calc(100vw / 8);
         height: calc(100vw / 8);
     }
