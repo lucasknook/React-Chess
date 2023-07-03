@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import * as constants from '../resources/constants.js'
 import Piece from './Piece.js'
@@ -19,14 +19,41 @@ export default function Board () {
         ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
         ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr']
     ])
+
+    /* Helper function to modify the board */
+    function modifyBoard (old_row, old_col, new_row, new_col, piece) {
+        const boardCopy = board
+        boardCopy[old_row][old_col] = null
+        boardCopy[new_row][new_col] = piece
+        setBoard(boardCopy)
+    }
+
+    /* Helper function to check if an array is present 
+       in an array of arrays */
+    function arrayInArray (array, arrayOfArrays) {
+        for (let i = 0; i < arrayOfArrays.length; i++) {
+            if (array[0] === arrayOfArrays[i][0] && array[1] === arrayOfArrays[i][1]) {
+                return true
+            }
+        }
+        return false
+    }
     
-    /* A piece can be moved by clicking on its square and its new position */
     const [selectedPiece, setSelectedPiece] = useState([null, null])
     const [hints, setHints] = useState([])
-    function movePiece (clicked_row, clicked_col) {
 
-        /* Set the hints for the selected piece */
-        setHints(getLegalMoves(board, clicked_row, clicked_col))
+    /* Helper functions for hints and selections */
+    function setSelection (row, col) {
+        setSelectedPiece([row, col])
+        setHints(getLegalMoves(board, row, col))
+    }
+
+    function resetSelection () {
+        setSelectedPiece([null, null])
+        setHints([])
+    }
+
+    function movePiece (clicked_row, clicked_col) {
 
         const selected_row = selectedPiece[0]
         const selected_col = selectedPiece[1]
@@ -37,65 +64,51 @@ export default function Board () {
 
             /* If the selected piece is the same as the clicked piece, unselect it */
             if (clicked_row === selected_row && clicked_col === selected_col) {
-                setSelectedPiece([null, null])
-                setHints([])
+                resetSelection()
                 return
             }
 
-            /* Check if a move is legal by comparing the clicked square to the
-                list of legal moves */
-            const legalMoves = getLegalMoves(board, selected_row, selected_col)
-            let isLegalMove = false
-            for (let i = 0; i < legalMoves.length; i++) {
-                if (legalMoves[i][0] === clicked_row && legalMoves[i][1] === clicked_col) {
-                    isLegalMove = true
-                    break
-                }
-            }
-
             /* If the move is legal, move the piece */
-            if (isLegalMove) {
-                const boardCopy = board
-                boardCopy[clicked_row][clicked_col] = selectedPieceName
-                boardCopy[selected_row][selected_col] = null
-                setBoard(boardCopy)
-                setHints([])
+            const legalMoves = getLegalMoves(board, selected_row, selected_col)
+            if (arrayInArray([clicked_row, clicked_col], legalMoves)) {
+                modifyBoard(selected_row, selected_col, clicked_row, clicked_col, selectedPieceName)
+                resetSelection()
+                return
             }
 
-            /* Unselect the piece */
-            setSelectedPiece([null, null])
+            /* If the move is not legal, and the clicked square is not empty,
+                select that piece */
+            if (board[clicked_row][clicked_col]) {
+                setSelection(clicked_row, clicked_col)
+                return
+            }
+
+            /* if the move is not legal, and the clicked square is empty,
+                unselect the piece */
+            resetSelection()
             return
         }
 
         /* If the selected square is empty and the clicked square is not empty,
            select that piece */
         if (board[clicked_row][clicked_col]) {
-            setSelectedPiece([clicked_row, clicked_col])
+            setSelection(clicked_row, clicked_col)
         }
     }
 
     function generateSquareJSX (row, col) {
         const piece = board[row][col]
 
-        /* Determine square color */
+        /* Determine the color of the square */
         const squareColor = (row % 2) === (col % 2) ? "lightSquare" : "darkSquare"
-
-        /* Check if the current square is selected */
         const isSelected = selectedPiece[0] === row && selectedPiece[1] === col
         const squareClassName = isSelected ? "selectedSquare" : squareColor
 
         /* Check if the current square is a hint, and what type
            op hint */
-        let isHint = false
-        for (let i = 0; i < hints.length; i++) {
-            if (hints[i][0] === row && hints[i][1] === col) {
-                isHint = true
-                break
-            }
-        }
-
+        let isHint = arrayInArray([row, col], hints)
         const hintClassName =
-            isHint && piece && selectedPiece && piece[0] != selectedPiece[0]
+            isHint && piece && selectedPiece && piece[0] !== selectedPiece[0]
                 ? "capture-hint"
                 : "normal-hint"
 
