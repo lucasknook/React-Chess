@@ -13,14 +13,19 @@ export default function Board () {
         ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
         ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
         [null, null, null, null, null, null, null, null],
-        [null, 'bk', null, null, null, null, null, null],
-        [null, null, null, null, 'wq', null, null, null],
+        [null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null],
         ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
         ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr']
     ])
 
+    
+    const [player, setPlayer] = useState('w') // eslint-disable-line
+    const [playerTurn, setPlayerTurn] = useState('w') // eslint-disable-line
+
     /* Helper function to modify the board */
+    /* TODO: Call the API to update the board */
     function modifyBoard (old_row, old_col, new_row, new_col, piece) {
         const boardCopy = board
         boardCopy[old_row][old_col] = null
@@ -54,6 +59,17 @@ export default function Board () {
     }
 
     function movePiece (clicked_row, clicked_col) {
+
+        /* If it is not the player's turn, do nothing */
+        if (player !== playerTurn) {
+            return
+        }
+
+        /* If the clicked square is not the same color as the player,
+           do nothing */
+        if (board[clicked_row][clicked_col] && board[clicked_row][clicked_col][0] !== player) {
+            return
+        }
 
         const selected_row = selectedPiece[0]
         const selected_col = selectedPiece[1]
@@ -126,9 +142,22 @@ export default function Board () {
     function generateBoardJSX () {
 
         let boardJSX = []
-        for (let row = 0; row < constants.BOARD_SIZE; row++) {
-            for (let col = 0; col < constants.BOARD_SIZE; col++) {
-                boardJSX.push(generateSquareJSX(row, col))
+
+        /* Whites view */
+        if (player === 'w') {
+            for (let row = 0; row < constants.BOARD_SIZE; row++) {
+                for (let col = 0; col < constants.BOARD_SIZE; col++) {
+                    boardJSX.push(generateSquareJSX(row, col))
+                }
+            }
+        }
+
+        /* Blacks view */
+        else if (player === 'b') {
+            for (let row = constants.BOARD_SIZE - 1; row >= 0; row--) {
+                for (let col = constants.BOARD_SIZE - 1; col >= 0; col--) {
+                    boardJSX.push(generateSquareJSX(row, col))
+                }   
             }
         }
 
