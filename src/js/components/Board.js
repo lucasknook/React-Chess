@@ -21,8 +21,8 @@ export default function Board () {
     ])
 
     
-    const [player, setPlayer] = useState('w') // eslint-disable-line
-    const [playerTurn, setPlayerTurn] = useState('w') // eslint-disable-line
+    const [player, setPlayer] = useState(constants.BLACK) // eslint-disable-line
+    const [playerTurn, setPlayerTurn] = useState(constants.BLACK) // eslint-disable-line
 
     /* Helper function to modify the board */
     /* TODO: Call the API to update the board */
@@ -66,8 +66,11 @@ export default function Board () {
         }
 
         /* If the clicked square is not the same color as the player,
-           do nothing */
-        if (board[clicked_row][clicked_col] && board[clicked_row][clicked_col][0] !== player) {
+           and the selected square is empty, do nothing */
+        if (board[clicked_row][clicked_col] && 
+            board[clicked_row][clicked_col][0] !== player && 
+            selectedPiece[0] === null && 
+            selectedPiece[1] === null) {
             return
         }
 
@@ -94,13 +97,13 @@ export default function Board () {
 
             /* If the move is not legal, and the clicked square is not empty,
                 select that piece */
-            if (board[clicked_row][clicked_col]) {
+            if (board[clicked_row][clicked_col] && board[clicked_row][clicked_col][0] === player) {
                 setSelection(clicked_row, clicked_col)
                 return
             }
 
             /* if the move is not legal, and the clicked square is empty,
-                unselect the piece */
+               unselect the piece */
             resetSelection()
             return
         }
@@ -144,7 +147,7 @@ export default function Board () {
         let boardJSX = []
 
         /* Whites view */
-        if (player === 'w') {
+        if (player === constants.WHITE) {
             for (let row = 0; row < constants.BOARD_SIZE; row++) {
                 for (let col = 0; col < constants.BOARD_SIZE; col++) {
                     boardJSX.push(generateSquareJSX(row, col))
@@ -153,7 +156,7 @@ export default function Board () {
         }
 
         /* Blacks view */
-        else if (player === 'b') {
+        else if (player === constants.BLACK) {
             for (let row = constants.BOARD_SIZE - 1; row >= 0; row--) {
                 for (let col = constants.BOARD_SIZE - 1; col >= 0; col--) {
                     boardJSX.push(generateSquareJSX(row, col))

@@ -9,3 +9,6 @@ export const RANK_5 = 3
 export const RANK_6 = 2
 export const RANK_7 = 1
 export const RANK_8 = 0
+
+export const WHITE = 'w'
+export const BLACK = 'b'
