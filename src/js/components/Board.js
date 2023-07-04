@@ -19,10 +19,9 @@ export default function Board () {
         ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
         ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr']
     ])
-
     
-    const [player, setPlayer] = useState(constants.BLACK) // eslint-disable-line
-    const [playerTurn, setPlayerTurn] = useState(constants.BLACK) // eslint-disable-line
+    const [player, setPlayer] = useState(constants.WHITE)
+    const [playerTurn, setPlayerTurn] = useState(constants.WHITE)
 
     /* Helper function to modify the board */
     /* TODO: Call the API to update the board */
@@ -168,8 +167,28 @@ export default function Board () {
     }
 
     return (
-        <div className="boardContainer">
-            {generateBoardJSX()}
-        </div>
+        <>
+            <div className="boardContainer">
+                {generateBoardJSX()}
+            </div>
+            
+            {/* Temporary for testing */}
+            <button onClick={() => {
+                if (player === constants.WHITE && playerTurn === constants.WHITE) {
+                    setPlayerTurn(constants.BLACK)
+                    setPlayer(constants.BLACK)
+                } else {
+                    setPlayerTurn(constants.WHITE)
+                    setPlayer(constants.WHITE)
+                }
+            }} style={{
+                position: "absolute",
+                // height: "50px",
+                // width: "50px",
+                top: "50%",
+                left: "20%",
+                transform: "translate(-20%, -50%)"
+            }}>Change Player</button>
+        </>
     )
 }
